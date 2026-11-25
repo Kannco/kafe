@@ -1,0 +1,2379 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Кафетерий — Доставка и предзаказ горячих блюд</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Rubik:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f5f7;
+      --surface-hover: #ebebf0;
+      --border: #e6e6eb;
+      --text: #1c1c1e;
+      --muted: #6e6e73;
+      --brand: #e31e24;
+      --brand-dark: #c4161c;
+      --brand-soft: #fff1f2;
+      --brand-wine: #5c1018;
+      --promo-amber: #ffb400;
+      --promo-orange: #f27420;
+      --dark-bar: #121214;
+      --green: #16a34a;
+      --green-soft: #eefbf2;
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.045);
+      --shadow-md: 0 14px 32px rgba(0, 0, 0, 0.085);
+      --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.18);
+      --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.48;
+      overflow-x: hidden;
+      padding-bottom: 84px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .rubik { font-family: 'Rubik', sans-serif; }
+    button, input, select { font-family: inherit; }
+    svg { display: block; flex-shrink: 0; }
+
+    .container {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* 1. ВЕРХНЯЯ ПРОМО-ПОЛОСА */
+    .top-promo-bar {
+      background: linear-gradient(90deg, #ffba08 0%, #ffa200 100%);
+      color: #1c1c1e;
+      font-size: 13px;
+      padding: 9px 0;
+      transition: max-height 0.35s var(--ease-out), opacity 0.3s ease, padding 0.35s ease;
+      overflow: hidden;
+    }
+    .top-promo-bar.hidden {
+      max-height: 0;
+      opacity: 0;
+      padding: 0;
+    }
+    .top-promo-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .top-promo-text {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .promo-code-chip {
+      background: #1c1c1e;
+      color: #fff;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      padding: 3px 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s var(--ease-spring), background 0.2s;
+    }
+    .promo-code-chip:hover { background: var(--brand); transform: translateY(-1px); }
+    .promo-close {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.85);
+      color: #1c1c1e;
+      font-size: 16px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .promo-close:hover { background: #fff; transform: rotate(90deg); }
+
+    /* 2. ОСНОВНАЯ ШАПКА */
+    .site-header {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 60;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 14px 0 10px;
+      flex-wrap: wrap;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+    .logo-emblem {
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--brand) 0%, #ff5a36 100%);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 18px rgba(227, 30, 36, 0.25);
+      transition: transform 0.3s var(--ease-spring);
+    }
+    .logo:hover .logo-emblem { transform: rotate(-6deg) scale(1.06); }
+    .logo-text { display: flex; flex-direction: column; line-height: 1.05; }
+    .logo-sub {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+    .logo-main {
+      font-family: 'Rubik', sans-serif;
+      font-size: 23px;
+      font-weight: 800;
+      color: var(--brand-wine);
+      letter-spacing: -0.02em;
+    }
+    .logo-main span { color: var(--brand); }
+
+    /* Переключатель режима получения */
+    .mode-switch {
+      display: inline-flex;
+      background: var(--surface);
+      padding: 3px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+    }
+    .mode-btn {
+      padding: 7px 15px;
+      border-radius: 999px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.25s var(--ease-out), color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .mode-btn:hover { color: var(--text); }
+    .mode-btn.active {
+      background: #1c1c1e;
+      color: #fff;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
+    }
+
+    /* Контактная инфа в шапке */
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .meta-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--brand-soft);
+      color: var(--brand);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .meta-label {
+      font-size: 11px;
+      color: var(--muted);
+      display: block;
+    }
+    .meta-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      text-decoration: none;
+      display: block;
+      transition: color 0.2s;
+    }
+    a.meta-value:hover { color: var(--brand); }
+
+    /* Кнопки */
+    .btn-red-pill {
+      position: relative;
+      overflow: hidden;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background 0.2s, transform 0.2s var(--ease-spring), box-shadow 0.25s ease;
+    }
+    .btn-red-pill:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 22px rgba(227, 30, 36, 0.28);
+    }
+    .btn-red-pill:active { transform: scale(0.97); }
+    .btn-red-pill.shine::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.26), transparent);
+      transform: skewX(-20deg);
+      animation: sheen 4.2s infinite;
+    }
+    @keyframes sheen {
+      0%, 72% { left: -100%; }
+      100% { left: 160%; }
+    }
+
+    .btn-outline-pill {
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: background 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .btn-outline-pill:hover { background: var(--surface); border-color: #d2d2da; }
+    .btn-outline-pill:active { transform: scale(0.97); }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Верхние вкладки */
+    .header-subnav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      padding: 6px 0 12px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .header-subnav::-webkit-scrollbar { display: none; }
+    .top-tab {
+      background: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 5px 0;
+      position: relative;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .top-tab:hover { color: var(--text); }
+    .top-tab.active { color: var(--brand); }
+    .top-tab::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -2px;
+      height: 2.5px;
+      background: var(--brand);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: center;
+      transition: transform 0.28s var(--ease-out);
+    }
+    .top-tab.active::after { transform: scaleX(1); }
+
+    /* 3. КАРУСЕЛЬ ПРОМО-БАННЕРОВ */
+    .carousel-section {
+      padding: 20px 0 24px;
+      background: #fff;
+    }
+    .carousel-wrap {
+      position: relative;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.65s var(--ease-out);
+    }
+    .slide {
+      min-width: 100%;
+      padding: 36px 56px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      align-items: center;
+      gap: 28px;
+      min-height: 315px;
+      position: relative;
+    }
+    .slide-1 { background: linear-gradient(115deg, #fffdf4 0%, #f5f9e2 55%, #dcf3c3 100%); }
+    .slide-2 { background: linear-gradient(115deg, #fff4cc 0%, #ffdf4d 58%, #ffb703 100%); }
+    .slide-3 { background: linear-gradient(115deg, #fff4ef 0%, #ffe0d2 60%, #ffc5a8 100%); }
+
+    .slide-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #2c2c2e;
+    }
+    .eyebrow-badge {
+      background: var(--brand);
+      color: #fff;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .slide h1, .slide h2 {
+      font-size: clamp(28px, 3.5vw, 46px);
+      line-height: 1.08;
+      color: #3f0e14;
+      margin-bottom: 16px;
+    }
+    .slide-2 h2 { color: #1a1a1a; }
+    .slide-price-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+    .old-price {
+      font-family: 'Rubik', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #6b2429;
+      text-decoration: line-through;
+      opacity: 0.65;
+    }
+    .free-pill {
+      background: var(--brand);
+      color: #fff;
+      font-family: 'Rubik', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+    }
+    .slide-visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .slide-photo-frame {
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 4 / 3;
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.16);
+      border: 4px solid #fff;
+      background: #fff;
+      transition: transform 0.6s var(--ease-out);
+    }
+    .slide:hover .slide-photo-frame { transform: scale(1.02) rotate(-0.5deg); }
+    .slide-photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+    .weight-sticker {
+      position: absolute;
+      top: -10px;
+      right: 6px;
+      background: #ffd000;
+      color: #1c1c1e;
+      font-family: 'Rubik', sans-serif;
+      font-weight: 800;
+      font-size: 13.5px;
+      padding: 9px 14px;
+      border-radius: 14px;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+      transform: rotate(4deg);
+      animation: floatSticker 3.6s ease-in-out infinite;
+    }
+    @keyframes floatSticker {
+      0%, 100% { transform: rotate(4deg) translateY(0); }
+      50% { transform: rotate(2deg) translateY(-5px); }
+    }
+
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.94);
+      color: #1c1c1e;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      z-index: 4;
+      transition: transform 0.2s var(--ease-spring), background 0.2s;
+    }
+    .carousel-arrow:hover { background: #fff; transform: translateY(-50%) scale(1.08); }
+    .carousel-prev { left: 14px; }
+    .carousel-next { right: 14px; }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 16px;
+      left: 56px;
+      display: flex;
+      gap: 7px;
+      z-index: 4;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: width 0.3s var(--ease-out), background 0.25s;
+    }
+    .dot.active { width: 26px; background: var(--brand); }
+
+    /* 4. ЧЁРНАЯ ЛИПКАЯ ПАНЕЛЬ КАТЕГОРИЙ */
+    .sticky-cat-bar {
+      position: sticky;
+      top: 0;
+      z-index: 70;
+      background: rgba(18, 18, 20, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #fff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+    }
+    .cat-bar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      min-height: 58px;
+      padding: 8px 0;
+    }
+    .cat-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      flex: 1;
+    }
+    .cat-left::-webkit-scrollbar { display: none; }
+
+    .icon-tool-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255, 255, 255, 0.08);
+      color: #d1d1d6;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: background 0.2s, color 0.2s, transform 0.2s;
+    }
+    .icon-tool-btn:hover, .icon-tool-btn.active {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    .cat-link {
+      background: transparent;
+      border: none;
+      color: #d4d4d8;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.22s ease, color 0.22s ease, transform 0.15s;
+    }
+    .cat-link:hover { color: #fff; background: rgba(255, 255, 255, 0.09); }
+    .cat-link.active { background: var(--brand); color: #fff; }
+
+    .cat-cart-btn {
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.2s var(--ease-spring);
+    }
+    .cat-cart-btn:hover { background: var(--brand-dark); transform: translateY(-1px); }
+    .cat-cart-btn.bump { animation: cartPop 0.42s var(--ease-spring); }
+    @keyframes cartPop {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    .cat-cart-divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    /* Поиск и сортировка */
+    .search-drawer {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s var(--ease-out), opacity 0.25s ease, padding 0.35s ease;
+    }
+    .search-drawer.open {
+      max-height: 120px;
+      opacity: 1;
+      padding: 12px 0;
+    }
+    .search-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .search-input {
+      flex: 1;
+      min-width: 240px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .search-input:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(227, 30, 36, 0.1);
+    }
+    .sort-select {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    /* 5. СТРАНИЦЫ И КАТАЛОГ */
+    .page-view { display: none; padding: 30px 0 42px; }
+    .page-view.active {
+      display: block;
+      animation: pageReveal 0.35s var(--ease-out);
+    }
+    @keyframes pageReveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .catalog-group { margin-bottom: 42px; }
+    .group-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .group-count {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--surface);
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .product-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: cardEnter 0.45s var(--ease-out) forwards;
+      animation-delay: var(--stagger, 0ms);
+      transition: transform 0.28s var(--ease-out), box-shadow 0.28s var(--ease-out), border-color 0.25s ease;
+    }
+    @keyframes cardEnter {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-md);
+      border-color: #d4d4dc;
+    }
+
+    .product-media {
+      position: relative;
+      aspect-ratio: 4 / 3;
+      background: var(--surface);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .product-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.55s var(--ease-out);
+    }
+    .product-card:hover .product-media img { transform: scale(1.06); }
+
+    .combo-collage {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      height: 100%;
+      gap: 2px;
+      background: #fff;
+    }
+    .combo-collage img { width: 100%; height: 100%; object-fit: cover; }
+
+    .card-badges {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+    .rating-pill {
+      background: rgba(255, 255, 255, 0.95);
+      color: #1c1c1e;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 999px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .rating-pill svg { color: #f59e0b; }
+    .tag-pill {
+      background: var(--brand);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .tag-pill.amber { background: var(--promo-orange); }
+
+    .product-body {
+      padding: 15px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .product-title {
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .product-title:hover { color: var(--brand); }
+    .product-comp {
+      font-size: 12.5px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .product-weight {
+      font-size: 12px;
+      color: #8e8e93;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+    .product-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #f0f0f3;
+    }
+    .price-block { display: flex; flex-direction: column; line-height: 1.1; }
+    .price-old-sm { font-size: 12px; color: var(--muted); text-decoration: line-through; }
+    .price-now { font-family: 'Rubik', sans-serif; font-size: 18px; font-weight: 700; }
+
+    .add-btn {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s var(--ease-spring);
+    }
+    .add-btn:hover {
+      background: var(--brand);
+      border-color: var(--brand);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .add-btn:active { transform: scale(0.95); }
+
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #1c1c1e;
+      color: #fff;
+      padding: 4px 6px;
+      border-radius: 999px;
+    }
+    .qty-btn {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.18s, transform 0.15s;
+    }
+    .qty-btn:hover { background: var(--brand); }
+    .qty-btn:active { transform: scale(0.9); }
+    .qty-num { min-width: 18px; text-align: center; font-size: 13px; font-weight: 700; }
+
+    /* 6. ВКЛАДКА КОРЗИНЫ */
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 1.32fr 0.68fr;
+      gap: 24px;
+      align-items: start;
+    }
+    .white-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .box-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .gift-progress {
+      background: #fff9e6;
+      border: 1px solid #ffe08a;
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 18px;
+    }
+    .gift-bar-bg {
+      height: 8px;
+      background: #f0e3bd;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .gift-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--promo-amber), var(--brand));
+      border-radius: 999px;
+      transition: width 0.5s var(--ease-out);
+    }
+    .cart-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px;
+      border-radius: 16px;
+      background: var(--surface);
+      margin-bottom: 10px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .cart-line:hover { background: #efeff3; }
+    .cart-line-left { display: flex; align-items: center; gap: 14px; }
+    .cart-thumb {
+      width: 72px;
+      height: 54px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #e5e5ea;
+      flex-shrink: 0;
+    }
+    .cart-line-right { display: flex; align-items: center; gap: 14px; }
+    .del-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--muted);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: color 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .del-btn:hover { color: var(--brand); border-color: var(--brand); transform: rotate(90deg); }
+
+    .promo-input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 9px;
+    }
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      margin: 14px 0 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* БЛОК «СВЯЗАТЬСЯ С НАМИ ПО ПОВОДУ ЗАКАЗА» */
+    .order-support-card {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px dashed var(--border);
+    }
+    .support-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .support-phone-link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 14px;
+      text-decoration: none;
+      color: var(--text);
+      margin-bottom: 10px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .support-phone-link:hover {
+      border-color: var(--brand);
+      background: var(--brand-soft);
+    }
+    .support-phone-num {
+      font-family: 'Rubik', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .support-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .support-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .support-chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 12px;
+      border-radius: 11px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--text);
+      font-size: 12.5px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: 0.2s;
+    }
+    .support-chip:hover {
+      background: var(--surface);
+      border-color: #c8c8d2;
+    }
+
+    /* 7. АКЦИИ / FAQ / КОНТАКТЫ */
+    .promo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .promo-card {
+      border-radius: var(--radius-xl);
+      padding: 26px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+      transition: transform 0.28s var(--ease-out), box-shadow 0.28s ease;
+    }
+    .promo-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+
+    /* Плавный аккордеон FAQ */
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 10px;
+      overflow: hidden;
+      background: #fff;
+      transition: border-color 0.25s;
+    }
+    .faq-item.open { border-color: #d2d2dc; }
+    .faq-q {
+      width: 100%;
+      text-align: left;
+      padding: 18px 20px;
+      background: none;
+      border: none;
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+    }
+    .faq-plus {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      font-size: 18px;
+      transition: transform 0.3s var(--ease-out), background 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .faq-item.open .faq-plus {
+      transform: rotate(45deg);
+      background: var(--brand);
+      color: #fff;
+    }
+    .faq-body-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.32s var(--ease-out);
+    }
+    .faq-item.open .faq-body-wrap { grid-template-rows: 1fr; }
+    .faq-a {
+      overflow: hidden;
+      font-size: 14px;
+      color: var(--muted);
+    }
+    .faq-a-inner { padding: 0 20px 18px; }
+
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .map-embed {
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      min-height: 360px;
+      background: var(--surface);
+    }
+    .map-embed iframe { width: 100%; height: 100%; min-height: 360px; border: 0; }
+
+    /* 8. ПЛАВАЮЩИЕ ЭЛЕМЕНТЫ И ТОСТЫ */
+    .gift-fab {
+      position: fixed;
+      left: 20px;
+      bottom: 18px;
+      background: var(--brand);
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(227, 30, 36, 0.34);
+      z-index: 85;
+      transition: transform 0.25s var(--ease-spring), box-shadow 0.25s;
+    }
+    .gift-fab:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 32px rgba(227, 30, 36, 0.42);
+    }
+
+    /* Уведомление о добавлении товара */
+    .toast-stack {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 140;
+      pointer-events: none;
+    }
+    .toast-item {
+      background: #1c1c1e;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 13.5px;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.35s var(--ease-spring) forwards;
+    }
+    .toast-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(14px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* МОДАЛКИ И ОКНО ОПЛАТЫ */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 15, 18, 0.58);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 120;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-bg.open { opacity: 1; pointer-events: auto; }
+    .modal-card {
+      background: #fff;
+      width: 100%;
+      max-width: 520px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(16px) scale(0.96);
+      transition: transform 0.32s var(--ease-out);
+    }
+    .modal-bg.open .modal-card { transform: translateY(0) scale(1); }
+    .modal-img {
+      width: 100%;
+      height: 245px;
+      object-fit: cover;
+      background: var(--surface);
+    }
+    .modal-body { padding: 24px; }
+
+    /* Карточки выбора способа оплаты */
+    .pay-methods {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 14px 0 18px;
+    }
+    .pay-option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 15px;
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .pay-option:hover { background: var(--surface); }
+    .pay-option.selected {
+      border-color: var(--brand);
+      background: var(--brand-soft);
+    }
+    .pay-option-left { display: flex; align-items: center; gap: 12px; }
+    .pay-radio {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #c7c7cc;
+      display: grid;
+      place-items: center;
+      transition: border-color 0.2s;
+    }
+    .pay-option.selected .pay-radio { border-color: var(--brand); }
+    .pay-option.selected .pay-radio::after {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--brand);
+    }
+
+    .form-field { margin-bottom: 12px; }
+    .form-field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+    .form-field input {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .form-field input:focus { background: #fff; border-color: var(--brand); }
+
+    /* Анимация успешной оплаты */
+    .success-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--green-soft);
+      color: var(--green);
+      margin: 0 auto 14px;
+      display: grid;
+      place-items: center;
+      animation: popScale 0.45s var(--ease-spring);
+    }
+    @keyframes popScale {
+      from { transform: scale(0.4); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2.5px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 1080px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 820px) {
+      .slide, .cart-layout, .contacts-grid, .promo-grid { grid-template-columns: 1fr; }
+      .slide { padding: 26px 22px; }
+      .carousel-dots { left: 22px; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    }
+    @media (max-width: 520px) {
+      .product-grid { grid-template-columns: 1fr; }
+      .header-meta { display: none; }
+      .gift-fab { left: 12px; bottom: 12px; padding: 10px 15px; font-size: 13px; }
+      .cart-line { flex-direction: column; align-items: flex-start; }
+      .cart-line-right { width: 100%; justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- 1. ВЕРХНЯЯ ПРОМО-ПЛАШКА -->
+<div class="top-promo-bar" id="topPromoBar">
+  <div class="container top-promo-inner">
+    <div class="top-promo-text">
+      <span><strong>Скидка 10% на первый заказ</strong> — собирайте корзину и применяйте промокод</span>
+      <button class="promo-code-chip" onclick="applyQuickPromo('ВКУСНО')">ВКУСНО</button>
+    </div>
+    <button class="promo-close" aria-label="Скрыть" onclick="document.getElementById('topPromoBar').classList.add('hidden')">×</button>
+  </div>
+</div>
+
+<!-- 2. БЕЛАЯ ШАПКА -->
+<header class="site-header">
+  <div class="container">
+    <div class="header-top">
+      <div class="header-left">
+        <a href="#" class="logo" onclick="openPage('menu'); return false;">
+          <div class="logo-emblem">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c1 3 4 5.5 4 9a4 4 0 1 1-8 0c0-1.5.5-2.8 1.4-4 .3 1.4 1.1 2.2 2.1 2.2.8 0 1.4-.6 1.4-1.5 0-1.7-1.1-3.3-.9-5.7z"/><path d="M5 19h14"/></svg>
+          </div>
+          <div class="logo-text">
+            <span class="logo-sub">гриль • шаурма • кофе</span>
+            <span class="logo-main">КАФЕ<span>ТЕРИЙ</span></span>
+          </div>
+        </a>
+
+        <div class="mode-switch" id="modeSwitch">
+          <button class="mode-btn active" data-mode="Доставка">Доставка</button>
+          <button class="mode-btn" data-mode="Самовывоз">Самовывоз</button>
+          <button class="mode-btn" data-mode="В зале">Зал</button>
+        </div>
+
+        <div class="header-meta">
+          <div class="meta-item">
+            <div class="meta-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <span class="meta-label">Заказ и поддержка</span>
+              <a href="tel:+79001234567" class="meta-value">+7 (900) 123-45-67</a>
+            </div>
+          </div>
+
+          <div class="meta-item">
+            <div class="meta-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <span class="meta-label">Сегодня работаем</span>
+              <span class="meta-value">с 09:00 до 23:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <button class="btn-outline-pill" onclick="openPage('contacts')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Адреса и контакты
+        </button>
+        <button class="btn-red-pill" onclick="openPage('cart')">
+          Корзина <span id="headerCartCount">(0)</span>
+        </button>
+      </div>
+    </div>
+
+    <nav class="header-subnav" id="topNav">
+      <button class="top-tab active" data-page="menu" onclick="openPage('menu')">Меню</button>
+      <button class="top-tab" data-page="promos" onclick="openPage('promos')">Акции</button>
+      <button class="top-tab" data-page="faq" onclick="openPage('faq')">Вопросы и ответы</button>
+      <button class="top-tab" data-page="contacts" onclick="openPage('contacts')">Контакты и доставка</button>
+      <button class="top-tab" data-page="cart" onclick="openPage('cart')">Корзина</button>
+    </nav>
+  </div>
+</header>
+
+<!-- 3. КАРУСЕЛЬ ПРОМО-БАННЕРОВ -->
+<section class="carousel-section" id="bannerSection">
+  <div class="container">
+    <div class="carousel-wrap">
+      <button class="carousel-arrow carousel-prev" aria-label="Предыдущий слайд" onclick="moveSlide(-1)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="carousel-arrow carousel-next" aria-label="Следующий слайд" onclick="moveSlide(1)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+      <div class="carousel-track" id="carouselTrack">
+        <!-- Слайд 1 -->
+        <div class="slide slide-1">
+          <div>
+            <div class="slide-eyebrow">
+              <span class="eyebrow-badge">Подарок</span>
+              <span>при заказе от 700 ₽</span>
+            </div>
+            <h1>Картофель<br>по-деревенски</h1>
+            <div class="slide-price-row">
+              <span class="old-price">160 ₽</span>
+              <span class="free-pill">БЕСПЛАТНО</span>
+            </div>
+            <button class="btn-red-pill shine" style="padding: 13px 26px; font-size: 14px;" onclick="scrollToCatalog()">
+              Собрать корзину →
+            </button>
+          </div>
+          <div class="slide-visual">
+            <div class="slide-photo-frame">
+              <img data-img-key="potato" alt="Картофель по-деревенски">
+            </div>
+            <div class="weight-sticker">180 г + соус</div>
+          </div>
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="slide slide-2">
+          <div>
+            <div class="slide-eyebrow">
+              <span class="eyebrow-badge" style="background:#1c1c1e;">Доставка от 30 минут</span>
+              <span>или самовывоз за 15 мин</span>
+            </div>
+            <h2>Горячая шаурма<br>на живых углях</h2>
+            <div class="slide-price-row">
+              <span class="free-pill" style="background:#1c1c1e;">ЗАКАЖИ СЕЙЧАС</span>
+            </div>
+            <button class="btn-red-pill" style="padding: 13px 26px; font-size: 14px;" onclick="selectCategory('shawarma')">
+              Смотреть шаурму →
+            </button>
+          </div>
+          <div class="slide-visual">
+            <div class="slide-photo-frame">
+              <img data-img-key="shawarma" alt="Шаурма на углях">
+            </div>
+            <div class="weight-sticker" style="background:#fff;">Оценка 4.9 ★</div>
+          </div>
+        </div>
+
+        <!-- Слайд 3 -->
+        <div class="slide slide-3">
+          <div>
+            <div class="slide-eyebrow">
+              <span class="eyebrow-badge">Скидка −10%</span>
+              <span>по промокоду ВКУСНО</span>
+            </div>
+            <h2>Шашлык и люля<br>прямо с мангала</h2>
+            <div class="slide-price-row">
+              <span class="old-price">390 ₽</span>
+              <span class="free-pill">ОТ 351 ₽</span>
+            </div>
+            <button class="btn-red-pill shine" style="padding: 13px 26px; font-size: 14px;" onclick="applyQuickPromo('ВКУСНО')">
+              Применить промокод ВКУСНО
+            </button>
+          </div>
+          <div class="slide-visual">
+            <div class="slide-photo-frame">
+              <img data-img-key="shashlik" alt="Шашлык из свиной шеи">
+            </div>
+            <div class="weight-sticker">Свежий мангал</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-dots" id="carouselDots">
+        <button class="dot active" aria-label="Слайд 1" onclick="goSlide(0)"></button>
+        <button class="dot" aria-label="Слайд 2" onclick="goSlide(1)"></button>
+        <button class="dot" aria-label="Слайд 3" onclick="goSlide(2)"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. ЧЁРНАЯ ЛИПКАЯ ПАНЕЛЬ КАТЕГОРИЙ -->
+<div class="sticky-cat-bar">
+  <div class="container cat-bar-inner">
+    <div class="cat-left" id="categoryBar">
+      <button class="icon-tool-btn" id="searchToggleBtn" title="Поиск по меню" onclick="toggleSearchDrawer()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+      <button class="icon-tool-btn" title="Сортировка" onclick="toggleSearchDrawer()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="14" y2="12"/><line x1="4" y1="18" x2="10" y2="18"/></svg>
+      </button>
+      <button class="cat-link active" data-cat="all" onclick="selectCategory('all')">Всё меню</button>
+      <button class="cat-link" data-cat="grill" onclick="selectCategory('grill')">Шашлык и мангал</button>
+      <button class="cat-link" data-cat="shawarma" onclick="selectCategory('shawarma')">Шаурма</button>
+      <button class="cat-link" data-cat="combo" onclick="selectCategory('combo')">Комбо-наборы</button>
+      <button class="cat-link" data-cat="sides" onclick="selectCategory('sides')">Гарниры</button>
+      <button class="cat-link" data-cat="drinks" onclick="selectCategory('drinks')">Кофе и напитки</button>
+    </div>
+
+    <button class="cat-cart-btn" id="barCartBtn" onclick="openPage('cart')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      <span class="cat-cart-divider"></span>
+      <span id="barCartPrice">0 ₽</span>
+    </button>
+  </div>
+</div>
+
+<!-- СТРОКА ПОИСКА И СОРТИРОВКИ -->
+<div class="search-drawer" id="searchDrawer">
+  <div class="container search-row">
+    <input type="text" class="search-input" id="searchInput" placeholder="Поиск по меню: шашлык, шаурма, кофе..." oninput="renderCatalog()">
+    <select class="sort-select" id="sortSelect" onchange="renderCatalog()">
+      <option value="default">Сначала хиты</option>
+      <option value="price-asc">Сначала дешевле</option>
+      <option value="price-desc">Сначала дороже</option>
+      <option value="rating">По рейтингу гостей</option>
+    </select>
+  </div>
+</div>
+
+<main class="container">
+  <!-- ВКЛАДКА 1: МЕНЮ -->
+  <section class="page-view active" id="view-menu">
+    <div id="catalogMount"></div>
+  </section>
+
+  <!-- ВКЛАДКА 2: КОРЗИНА -->
+  <section class="page-view" id="view-cart">
+    <div id="cartMount"></div>
+  </section>
+
+  <!-- ВКЛАДКА 3: АКЦИИ -->
+  <section class="page-view" id="view-promos">
+    <h2 class="group-title">Акции и спецпредложения</h2>
+    <div class="promo-grid">
+      <div class="promo-card" style="background: linear-gradient(135deg, #fffdf0, #e9f7d5);">
+        <div>
+          <span class="eyebrow-badge" style="margin-bottom:12px; display:inline-block;">Подарок к заказу</span>
+          <h3 style="font-size:21px; margin-bottom:8px;">Картофель по-деревенски бесплатно</h3>
+          <p style="font-size:14px; color:var(--muted);">Соберите корзину от 700 ₽ — автоматически добавим горячую порцию картофеля по-деревенски с соусом в подарок.</p>
+        </div>
+        <button class="btn-red-pill" onclick="openPage('menu')">Перейти в меню</button>
+      </div>
+
+      <div class="promo-card" style="background: linear-gradient(135deg, #fff7d6, #ffdf70);">
+        <div>
+          <span class="eyebrow-badge" style="background:#1c1c1e; margin-bottom:12px; display:inline-block;">Промокод ВКУСНО</span>
+          <h3 style="font-size:21px; margin-bottom:8px;">Скидка 10% на первый заказ</h3>
+          <p style="font-size:14px; color:#3a3a3c;">Действует на всё меню при оформлении онлайн на доставку или самовывоз из кафе.</p>
+        </div>
+        <button class="btn-red-pill" onclick="applyQuickPromo('ВКУСНО')">Активировать промокод</button>
+      </div>
+
+      <div class="promo-card" style="background: linear-gradient(135deg, #fff3ee, #ffd6c4);">
+        <div>
+          <span class="eyebrow-badge" style="background:var(--promo-orange); margin-bottom:12px; display:inline-block;">Выгода до 15%</span>
+          <h3 style="font-size:21px; margin-bottom:8px;">Сытные комбо-наборы</h3>
+          <p style="font-size:14px; color:var(--muted);">Шаурма + зерновой кофе или шашлык + картофель дешевле, чем брать позиции по отдельности.</p>
+        </div>
+        <button class="btn-red-pill" onclick="selectCategory('combo')">Выбрать комбо</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ВКЛАДКА 4: ВОПРОСЫ И ОТВЕТЫ -->
+  <section class="page-view" id="view-faq">
+    <h2 class="group-title">Вопросы и ответы</h2>
+    <div style="max-width: 820px;">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Сколько занимает приготовление и доставка?
+          <span class="faq-plus">+</span>
+        </button>
+        <div class="faq-body-wrap"><div class="faq-a"><div class="faq-a-inner">
+          Блюда на мангале и шаурма готовятся 10–15 минут. Самовывоз доступен сразу после готовности, доставка по городу занимает в среднем от 30 до 45 минут.
+        </div></div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Как можно оплатить заказ?
+          <span class="faq-plus">+</span>
+        </button>
+        <div class="faq-body-wrap"><div class="faq-a"><div class="faq-a-inner">
+          Доступна быстрая онлайн-оплата через СБП или банковской картой прямо на сайте, а также оплата картой или наличными при получении.
+        </div></div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Как получить бесплатный подарок к заказу?
+          <span class="faq-plus">+</span>
+        </button>
+        <div class="faq-body-wrap"><div class="faq-a"><div class="faq-a-inner">
+          Как только сумма блюд в корзине достигнет 700 ₽, порция горячего картофеля по-деревенски с чесночным соусом добавится в заказ автоматически за 0 ₽.
+        </div></div></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          Как внести изменения в уже оформленный заказ?
+          <span class="faq-plus">+</span>
+        </button>
+        <div class="faq-body-wrap"><div class="faq-a"><div class="faq-a-inner">
+          Просто позвоните нам по номеру +7 (900) 123-45-67 или напишите в мессенджер в течение 5 минут после оформления — администратор оперативно скорректирует заказ.
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ВКЛАДКА 5: КОНТАКТЫ И ДОСТАВКА -->
+  <section class="page-view" id="view-contacts">
+    <h2 class="group-title">Контакты и доставка</h2>
+    <div class="contacts-grid">
+      <div class="white-box" style="display:flex; flex-direction:column; justify-content:space-between; gap:18px;">
+        <div>
+          <h3 style="font-size:20px; margin-bottom:14px;">Кафе «Кафетерий»</h3>
+
+          <span class="meta-label">Адрес</span>
+          <strong style="font-size:16px; display:block; margin-bottom:14px;">ул. Центральная, д. 15 (вход со стороны сквера)</strong>
+
+          <span class="meta-label">Режим работы</span>
+          <strong style="font-size:15px; display:block; margin-bottom:14px;">Ежедневно с 09:00 до 23:00 без выходных</strong>
+
+          <span class="meta-label">Связаться с нами по поводу заказа</span>
+          <a href="tel:+79001234567" style="font-family:'Rubik',sans-serif; font-size:22px; font-weight:800; color:var(--brand); text-decoration:none; display:inline-block; margin:4px 0 6px;">+7 (900) 123-45-67</a>
+          <p style="font-size:13px; color:var(--muted);">Звонки и сообщения принимаются каждый день в часы работы кухни.</p>
+        </div>
+
+        <div class="support-buttons" style="grid-template-columns: repeat(3, 1fr);">
+          <a href="tel:+79001234567" class="btn-red-pill">Позвонить</a>
+          <a href="https://t.me/kafeteriy_order" target="_blank" class="btn-outline-pill">Telegram</a>
+          <a href="https://wa.me/79001234567" target="_blank" class="btn-outline-pill">WhatsApp</a>
+        </div>
+      </div>
+
+      <div class="white-box" style="background: var(--surface); border-style: dashed;">
+        <h3 style="font-size:18px; margin-bottom:14px;">Условия доставки и самовывоза</h3>
+        <div style="display:flex; flex-direction:column; gap:12px; font-size:14px; color:var(--muted);">
+          <div style="background:#fff; padding:14px; border-radius:14px; border:1px solid var(--border);">
+            <strong style="color:var(--text); display:block; margin-bottom:3px;">Быстрая доставка по городу</strong>
+            Бесплатно при заказе от 800 ₽. При заказе до 800 ₽ стоимость доставки — 120 ₽.
+          </div>
+          <div style="background:#fff; padding:14px; border-radius:14px; border:1px solid var(--border);">
+            <strong style="color:var(--text); display:block; margin-bottom:3px;">Самовывоз из зала</strong>
+            Готовим за 10–15 минут. Забираете горячий заказ на стойке выдачи без очереди.
+          </div>
+          <div style="background:#fff; padding:14px; border-radius:14px; border:1px solid var(--border);">
+            <strong style="color:var(--text); display:block; margin-bottom:3px;">Оплата любым способом</strong>
+            СБП, банковская карта онлайн или расчёт при получении.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ПЛАВАЮЩАЯ КНОПКА ПОДАРКА -->
+<button class="gift-fab" onclick="openGiftModal()">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+  Выбери подарок
+</button>
+
+<!-- СТЕК ВСПЛЫВАЮЩИХ УВЕДОМЛЕНИЙ -->
+<div class="toast-stack" id="toastStack"></div>
+
+<!-- МОДАЛКА БЫСТРОГО ПРОСМОТРА БЛЮДА -->
+<div class="modal-bg" id="productModal" onclick="if(event.target===this) closeModal('productModal')">
+  <div class="modal-card" id="productModalCard"></div>
+</div>
+
+<!-- МОДАЛКА ПОДАРКА -->
+<div class="modal-bg" id="giftModal" onclick="if(event.target===this) closeModal('giftModal')">
+  <div class="modal-card" style="max-width:440px;">
+    <div class="modal-body" id="giftModalBody"></div>
+  </div>
+</div>
+
+<!-- МОДАЛКА ОПЛАТЫ -->
+<div class="modal-bg" id="paymentModal" onclick="if(event.target===this) closeModal('paymentModal')">
+  <div class="modal-card" style="max-width:480px;">
+    <div class="modal-body" id="paymentModalBody"></div>
+  </div>
+</div>
+
+<script>
+  // =========================================================================
+  // НАСТРОЙКИ КАФЕ (редактируй тут под любой новый проект)
+  // =========================================================================
+  const CAFE = {
+    name: "Кафетерий",
+    phoneDisplay: "+7 (900) 123-45-67",
+    phoneRaw: "+79001234567",
+    hours: "Ежедневно с 09:00 до 23:00",
+    tgLink: "https://t.me/kafeteriy_order",
+    waLink: "https://wa.me/79001234567",
+    promoCode: "ВКУСНО",
+    giftThreshold: 700
+  };
+
+  // Автоподхват твоих скачанных картинок ИЛИ переименованных 1.jpg–6.jpg
+  const IMAGE_SOURCES = {
+    shashlik: ["Gemini_Generated_Image_x76qxxx76qxxx76q.jpg", "1.jpg", "img/1.jpg"],
+    lula:     ["Gemini_Generated_Image_x76qxxx76qxxx76q (1).jpg", "3.jpg", "img/3.jpg"],
+    shawarma: ["Gemini_Generated_Image_x76qxxx76qxxx76q (2).jpg", "4.jpg", "2.jpg", "img/2.jpg"],
+    potato:   ["Gemini_Generated_Image_x76qxxx76qxxx76q (3).jpg", "5.jpg", "img/5.jpg"],
+    coffee:   ["Gemini_Generated_Image_x76qxxx76qxxx76q (4).jpg", "6.jpg", "img/6.jpg"]
+  };
+
+  function svgFallback(label) {
+    return "data:image/svg+xml;utf8," + encodeURIComponent(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="450" viewBox="0 0 600 450">
+        <rect width="600" height="450" fill="#f5f5f7"/>
+        <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#8e8e93" font-family="sans-serif" font-size="20" font-weight="700">${label}</text>
+      </svg>`
+    );
+  }
+
+  function nextImgFallback(imgEl, key, label) {
+    const list = IMAGE_SOURCES[key] || [];
+    const idx = parseInt(imgEl.dataset.fbIdx || "0", 10) + 1;
+    if (idx < list.length) {
+      imgEl.dataset.fbIdx = String(idx);
+      imgEl.src = list[idx];
+    } else {
+      imgEl.onerror = null;
+      imgEl.src = svgFallback(label);
+    }
+  }
+
+  function imgTag(key, alt, cls = "") {
+    const first = (IMAGE_SOURCES[key] && IMAGE_SOURCES[key][0]) || "";
+    return `<img class="${cls}" src="${first}" data-fb-idx="0" alt="${alt}" loading="lazy" onerror="nextImgFallback(this, '${key}', '${alt.replace(/'/g, "")}')">`;
+  }
+
+  const STAR_SVG = `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+
+  const CATEGORIES = [
+    { key: "grill", title: "Шашлык и мангал" },
+    { key: "shawarma", title: "Шаурма на углях" },
+    { key: "combo", title: "Комбо-наборы" },
+    { key: "sides", title: "Гарниры и закуски" },
+    { key: "drinks", title: "Кофе и напитки" }
+  ];
+
+  const MENU = [
+    {
+      id: 1, cat: "grill", rating: "4.9", tag: "Хит",
+      name: "Шашлык из свиной шеи", weight: "200 / 80 г",
+      comp: "Отборная свиная шея на берёзовых углях, маринованный красный лук, тонкий лаваш, томатный соус и свежая зелень.",
+      price: 390, oldPrice: null, imgKey: "shashlik"
+    },
+    {
+      id: 2, cat: "grill", rating: "4.9", tag: "С мангала",
+      name: "Люля-кебаб фирменный", weight: "220 / 70 г",
+      comp: "Сочный рубленый кебаб со специями, обжаренный на шампуре, красный лук, лаваш, зелень и фирменный соус.",
+      price: 330, oldPrice: null, imgKey: "lula"
+    },
+    {
+      id: 3, cat: "grill", rating: "4.8", tag: "Выгода",
+      name: "Двойная порция шашлыка", weight: "400 / 120 г",
+      comp: "Две полные порции шашлыка из свиной шеи, двойной лаваш, маринованный лук и два соуса на выбор.",
+      price: 720, oldPrice: 780, imgKey: "shashlik"
+    },
+    {
+      id: 4, cat: "grill", rating: "4.8", tag: null,
+      name: "Ассорти на двоих с угля", weight: "450 г",
+      comp: "Шашлык из свиной шеи + сочный люля-кебаб, свежий лаваш, маринованный лук и томатный соус.",
+      price: 680, oldPrice: 720, comboKeys: ["shashlik", "lula"]
+    },
+    {
+      id: 5, cat: "shawarma", rating: "4.9", tag: "Популярное",
+      name: "Шаурма классическая", weight: "340 г",
+      comp: "Сочное куриное мясо с гриля, спелые томаты, свежая зелень, хрустящий лаваш и фирменный чесночный соус.",
+      price: 250, oldPrice: null, imgKey: "shawarma"
+    },
+    {
+      id: 6, cat: "shawarma", rating: "4.9", tag: "XXL",
+      name: "Шаурма XXL Сырная", weight: "460 г",
+      comp: "Двойная порция курицы на углях, расплавленный сыр чеддер, томаты, маринованные огурчики, чесночный соус.",
+      price: 320, oldPrice: null, imgKey: "shawarma"
+    },
+    {
+      id: 7, cat: "combo", rating: "4.9", tag: "-15%", tagClass: "amber",
+      name: "Комбо «Сытный перекус»", weight: "640 г",
+      comp: "Шаурма классическая на углях + горячий зерновой капучино 0.3 л в стакане с крышкой.",
+      price: 340, oldPrice: 400, comboKeys: ["shawarma", "coffee"]
+    },
+    {
+      id: 8, cat: "combo", rating: "4.9", tag: "Хит обеда", tagClass: "amber",
+      name: "Комбо «Сытный мангал»", weight: "460 г",
+      comp: "Шашлык из свиной шеи с лавашом + золотистый картофель по-деревенски со сметанно-чесночным соусом.",
+      price: 490, oldPrice: 550, comboKeys: ["shashlik", "potato"]
+    },
+    {
+      id: 9, cat: "sides", rating: "4.8", tag: "Горячее",
+      name: "Картофель по-деревенски", weight: "180 г",
+      comp: "Хрустящие картофельные дольки с паприкой, розмарином и морской солью, подаётся с чесночным дипом.",
+      price: 160, oldPrice: null, imgKey: "potato"
+    },
+    {
+      id: 10, cat: "sides", rating: "4.8", tag: null,
+      name: "Большой сет долек + соус", weight: "320 г",
+      comp: "Увеличенная порция картофеля по-деревенски для компании с двумя фирменными соусами.",
+      price: 260, oldPrice: 290, imgKey: "potato"
+    },
+    {
+      id: 11, cat: "drinks", rating: "4.9", tag: "Зерновой",
+      name: "Капучино 0.3", weight: "300 мл",
+      comp: "100% арабика свежей обжарки, бархатная молочная пенка, удобный термостакан с собой.",
+      price: 150, oldPrice: null, imgKey: "coffee"
+    },
+    {
+      id: 12, cat: "drinks", rating: "4.8", tag: null,
+      name: "Американо / Эспрессо", weight: "250 мл",
+      comp: "Бодрящий чёрный кофе свежего помола с насыщенным вкусом и плотной крема.",
+      price: 130, oldPrice: null, imgKey: "coffee"
+    }
+  ];
+
+  // Состояние приложения
+  let cart = JSON.parse(localStorage.getItem("kafeteriy_cart") || "{}");
+  let activePage = "menu";
+  let activeCategory = "all";
+  let activeMode = "Доставка";
+  let appliedPromo = "";
+  let selectedPayMethod = "sbp";
+  let slideIdx = 0;
+
+  function saveCart() {
+    localStorage.setItem("kafeteriy_cart", JSON.stringify(cart));
+  }
+
+  function showToast(text) {
+    const stack = document.getElementById("toastStack");
+    const el = document.createElement("div");
+    el.className = "toast-item";
+    el.innerHTML = `<span class="toast-dot"></span><span>${text}</span>`;
+    stack.appendChild(el);
+    setTimeout(() => {
+      el.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+      el.style.opacity = "0";
+      el.style.transform = "translateY(8px)";
+      setTimeout(() => el.remove(), 300);
+    }, 2400);
+  }
+
+  function initBannerPhotos() {
+    document.querySelectorAll("[data-img-key]").forEach(img => {
+      const key = img.dataset.imgKey;
+      img.src = IMAGE_SOURCES[key][0];
+      img.dataset.fbIdx = "0";
+      img.onerror = () => nextImgFallback(img, key, img.alt || "Блюдо");
+    });
+  }
+
+  // Карусель
+  function goSlide(idx) {
+    slideIdx = (idx + 3) % 3;
+    document.getElementById("carouselTrack").style.transform = `translateX(-${slideIdx * 100}%)`;
+    document.querySelectorAll("#carouselDots .dot").forEach((d, i) => d.classList.toggle("active", i === slideIdx));
+  }
+  function moveSlide(delta) { goSlide(slideIdx + delta); }
+  setInterval(() => { if (activePage === "menu") moveSlide(1); }, 6500);
+
+  // Переключатель Доставка / Самовывоз / Зал
+  document.querySelectorAll("#modeSwitch .mode-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("#modeSwitch .mode-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      activeMode = btn.dataset.mode;
+      showToast(`Режим заказа: ${activeMode}`);
+      if (activePage === "cart") renderCart();
+    });
+  });
+
+  // Навигация между вкладками
+  function openPage(page) {
+    activePage = page;
+    document.querySelectorAll(".page-view").forEach(v => v.classList.remove("active"));
+    document.getElementById("view-" + page).classList.add("active");
+
+    document.querySelectorAll("#topNav .top-tab").forEach(t => {
+      t.classList.toggle("active", t.dataset.page === page);
+    });
+
+    document.getElementById("bannerSection").style.display = page === "menu" ? "block" : "none";
+
+    if (page === "cart") renderCart();
+    if (page === "menu") renderCatalog();
+    window.scrollTo({ top: page === "menu" ? 0 : 100, behavior: "smooth" });
+  }
+
+  function selectCategory(cat) {
+    activeCategory = cat;
+    document.querySelectorAll("#categoryBar .cat-link").forEach(c => {
+      c.classList.toggle("active", c.dataset.cat === cat);
+    });
+    if (activePage !== "menu") openPage("menu");
+    else renderCatalog();
+    scrollToCatalog();
+  }
+
+  function scrollToCatalog() {
+    document.getElementById("view-menu").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function toggleSearchDrawer() {
+    const d = document.getElementById("searchDrawer");
+    d.classList.toggle("open");
+    document.getElementById("searchToggleBtn").classList.toggle("active", d.classList.contains("open"));
+    if (d.classList.contains("open")) document.getElementById("searchInput").focus();
+  }
+
+  // Каталог
+  function renderMedia(item) {
+    if (item.comboKeys) {
+      return `<div class="combo-collage">${imgTag(item.comboKeys[0], item.name)}${imgTag(item.comboKeys[1], item.name)}</div>`;
+    }
+    return imgTag(item.imgKey, item.name);
+  }
+
+  function renderCard(item, idx) {
+    const qty = cart[item.id] || 0;
+    const tagHtml = item.tag ? `<span class="tag-pill ${item.tagClass || ""}">${item.tag}</span>` : "";
+    const oldHtml = item.oldPrice ? `<span class="price-old-sm">${item.oldPrice} ₽</span>` : "";
+    const stagger = Math.min(idx * 45, 360);
+
+    const actionHtml = qty > 0
+      ? `<div class="qty-stepper">
+           <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+           <span class="qty-num">${qty}</span>
+           <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+         </div>`
+      : `<button class="add-btn" onclick="changeQty(${item.id}, 1)">В корзину</button>`;
+
+    return `
+      <article class="product-card" style="--stagger: ${stagger}ms;">
+        <div class="product-media" onclick="openProductModal(${item.id})">
+          ${renderMedia(item)}
+          <div class="card-badges">
+            <span class="rating-pill">${STAR_SVG} ${item.rating}</span>
+            ${tagHtml}
+          </div>
+        </div>
+        <div class="product-body">
+          <h3 class="product-title" onclick="openProductModal(${item.id})">${item.name}</h3>
+          <p class="product-comp">${item.comp}</p>
+          <div class="product-weight">${item.weight}</div>
+          <div class="product-footer">
+            <div class="price-block">
+              ${oldHtml}
+              <span class="price-now">${item.price} ₽</span>
+            </div>
+            ${actionHtml}
+          </div>
+        </div>
+      </article>
+    `;
+  }
+
+  function renderCatalog() {
+    const mount = document.getElementById("catalogMount");
+    const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
+    const sort = document.getElementById("sortSelect").value;
+
+    let items = MENU.filter(item => {
+      const matchCat = activeCategory === "all" || item.cat === activeCategory;
+      const matchSearch = !q || item.name.toLowerCase().includes(q) || item.comp.toLowerCase().includes(q);
+      return matchCat && matchSearch;
+    });
+
+    if (sort === "price-asc") items.sort((a, b) => a.price - b.price);
+    if (sort === "price-desc") items.sort((a, b) => b.price - a.price);
+    if (sort === "rating") items.sort((a, b) => parseFloat(b.rating) - parseFloat(a.rating));
+
+    if (!items.length) {
+      mount.innerHTML = `<div class="white-box" style="text-align:center; padding:48px;"><h3>Ничего не нашлось</h3><p style="color:var(--muted); margin:8px 0 18px;">Попробуйте изменить запрос или выберите другую категорию.</p><button class="btn-red-pill" onclick="document.getElementById('searchInput').value=''; selectCategory('all')">Показать всё меню</button></div>`;
+      return;
+    }
+
+    if (activeCategory === "all" && !q && sort === "default") {
+      mount.innerHTML = CATEGORIES.map(cat => {
+        const groupItems = items.filter(i => i.cat === cat.key);
+        if (!groupItems.length) return "";
+        return `
+          <div class="catalog-group">
+            <h2 class="group-title">${cat.title} <span class="group-count">${groupItems.length}</span></h2>
+            <div class="product-grid">${groupItems.map((it, i) => renderCard(it, i)).join("")}</div>
+          </div>
+        `;
+      }).join("");
+    } else {
+      const catObj = CATEGORIES.find(c => c.key === activeCategory);
+      const heading = q ? `Результаты поиска: «${q}»` : (catObj ? catObj.title : "Всё меню");
+      mount.innerHTML = `
+        <div class="catalog-group">
+          <h2 class="group-title">${heading} <span class="group-count">${items.length}</span></h2>
+          <div class="product-grid">${items.map((it, i) => renderCard(it, i)).join("")}</div>
+        </div>
+      `;
+    }
+  }
+
+  // Корзина и расчёты
+  function getTotals() {
+    let count = 0, subtotal = 0;
+    for (const [id, qty] of Object.entries(cart)) {
+      const item = MENU.find(m => m.id == id);
+      if (!item) continue;
+      count += qty;
+      subtotal += item.price * qty;
+    }
+    const discount = appliedPromo === CAFE.promoCode ? Math.round(subtotal * 0.1) : 0;
+    const total = Math.max(0, subtotal - discount);
+    return { count, subtotal, discount, total };
+  }
+
+  function syncBadges(shouldBump = false) {
+    const { count, total } = getTotals();
+    document.getElementById("headerCartCount").textContent = `(${count})`;
+    document.getElementById("barCartPrice").textContent = `${total} ₽`;
+
+    if (shouldBump) {
+      const btn = document.getElementById("barCartBtn");
+      btn.classList.remove("bump");
+      void btn.offsetWidth;
+      btn.classList.add("bump");
+    }
+  }
+
+  function changeQty(id, delta) {
+    const prev = cart[id] || 0;
+    cart[id] = Math.max(0, prev + delta);
+    if (cart[id] === 0) delete cart[id];
+    saveCart();
+    syncBadges(delta > 0);
+
+    if (delta > 0 && prev === 0) {
+      const item = MENU.find(m => m.id === id);
+      if (item) showToast(`Добавлено: ${item.name}`);
+    }
+
+    if (activePage === "menu") renderCatalog();
+    if (activePage === "cart") renderCart();
+  }
+
+  function removeLine(id) {
+    delete cart[id];
+    saveCart();
+    syncBadges();
+    renderCart();
+  }
+
+  function clearCart() {
+    cart = {};
+    appliedPromo = "";
+    saveCart();
+    syncBadges();
+    renderCart();
+  }
+
+  function applyQuickPromo(code) {
+    appliedPromo = code.toUpperCase();
+    showToast(`Промокод ${appliedPromo} применён (−10%)`);
+    openPage("cart");
+  }
+
+  function applyManualPromo() {
+    const val = (document.getElementById("promoInput").value || "").trim().toUpperCase();
+    if (val === CAFE.promoCode) {
+      appliedPromo = CAFE.promoCode;
+      showToast(`Промокод ${CAFE.promoCode} активирован!`);
+      renderCart();
+    } else {
+      showToast(`Попробуйте промокод ${CAFE.promoCode} на −10%`);
+    }
+  }
+
+  function supportBlockHtml() {
+    return `
+      <div class="order-support-card">
+        <div class="support-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Связаться с нами по поводу заказа
+        </div>
+        <a href="tel:${CAFE.phoneRaw}" class="support-phone-link">
+          <span class="support-phone-num">${CAFE.phoneDisplay}</span>
+          <span style="font-size:12px; font-weight:700; color:var(--brand);">Позвонить</span>
+        </a>
+        <div class="support-note">${CAFE.hours} • ответим за 1 минуту</div>
+        <div class="support-buttons">
+          <a href="${CAFE.tgLink}" target="_blank" class="support-chip">Telegram</a>
+          <a href="${CAFE.waLink}" target="_blank" class="support-chip">WhatsApp</a>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderCart() {
+    const mount = document.getElementById("cartMount");
+    const entries = Object.entries(cart);
+    const { count, subtotal, discount, total } = getTotals();
+
+    if (!entries.length) {
+      mount.innerHTML = `
+        <div class="white-box" style="text-align:center; padding:56px 20px; max-width:640px; margin:0 auto;">
+          <div style="width:64px; height:64px; border-radius:50%; background:var(--surface); margin:0 auto 14px; display:grid; place-items:center; color:var(--muted);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          </div>
+          <h2 style="font-size:24px; margin-bottom:8px;">Корзина пока пустая</h2>
+          <p style="color:var(--muted); margin-bottom:22px;">Добавьте горячий шашлык, шаурму или зерновой кофе из нашего меню.</p>
+          <button class="btn-red-pill" style="padding:13px 28px; font-size:15px;" onclick="openPage('menu')">Перейти в меню</button>
+        </div>
+      `;
+      return;
+    }
+
+    const leftForGift = Math.max(0, CAFE.giftThreshold - subtotal);
+    const giftPercent = Math.min(100, Math.round((subtotal / CAFE.giftThreshold) * 100));
+
+    const linesHtml = entries.map(([id, qty]) => {
+      const item = MENU.find(m => m.id == id);
+      if (!item) return "";
+      const imgKey = item.imgKey || item.comboKeys[0];
+      return `
+        <div class="cart-line">
+          <div class="cart-line-left">
+            ${imgTag(imgKey, item.name, "cart-thumb")}
+            <div>
+              <div style="font-weight:700; font-size:15px;">${item.name}</div>
+              <div style="font-size:12px; color:var(--muted);">${item.weight} • ${item.price} ₽ / шт.</div>
+            </div>
+          </div>
+          <div class="cart-line-right">
+            <div class="qty-stepper">
+              <button class="qty-btn" onclick="changeQty(${item.id}, -1)">−</button>
+              <span class="qty-num">${qty}</span>
+              <button class="qty-btn" onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+            <div class="rubik" style="min-width:74px; text-align:right; font-size:16px;">${item.price * qty} ₽</div>
+            <button class="del-btn" onclick="removeLine(${item.id})" title="Удалить">✕</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    const giftLine = leftForGift === 0
+      ? `<div class="cart-line" style="background:var(--green-soft); border:1px solid #bce8cb;">
+           <div class="cart-line-left">
+             ${imgTag("potato", "Подарок", "cart-thumb")}
+             <div>
+               <div style="font-weight:700; color:#117a3c;">Картофель по-деревенски (Подарок)</div>
+               <div style="font-size:12px; color:#2f7d4d;">180 г + чесночный соус</div>
+             </div>
+           </div>
+           <div class="rubik" style="color:#117a3c; font-weight:700;">0 ₽</div>
+         </div>`
+      : "";
+
+    mount.innerHTML = `
+      <h2 class="group-title">Корзина <span class="group-count">${count} поз.</span></h2>
+      <div class="cart-layout">
+        <div class="white-box">
+          <div class="gift-progress">
+            <div style="font-size:13.5px; font-weight:600;">
+              ${leftForGift > 0
+                ? `Добавьте ещё на <b>${leftForGift} ₽</b> — подарим картофель по-деревенски бесплатно`
+                : `Подарок «Картофель по-деревенски» уже добавлен в ваш заказ`}
+            </div>
+            <div class="gift-bar-bg"><div class="gift-bar-fill" style="width:${giftPercent}%"></div></div>
+          </div>
+
+          <div class="box-head">
+            <h3 style="font-size:18px;">Состав заказа</h3>
+            <button class="btn-outline-pill" onclick="clearCart()">Очистить всё</button>
+          </div>
+
+          ${linesHtml}
+          ${giftLine}
+
+          <div style="margin-top:16px;">
+            <button class="btn-outline-pill" onclick="openPage('menu')">+ Добавить ещё блюда</button>
+          </div>
+        </div>
+
+        <div class="white-box">
+          <h3 style="font-size:18px; margin-bottom:14px;">Ваш заказ</h3>
+
+          <div class="promo-input-row">
+            <input type="text" class="search-input" id="promoInput" style="min-width:0;" placeholder="Промокод (например: ${CAFE.promoCode})" value="${appliedPromo}">
+            <button class="btn-red-pill" style="border-radius:12px; padding:10px 16px;" onclick="applyManualPromo()">ОК</button>
+          </div>
+
+          <div class="summary-row"><span>Способ получения</span><strong style="color:var(--text);">${activeMode}</strong></div>
+          <div class="summary-row"><span>Блюда (${count} шт.)</span><span>${subtotal} ₽</span></div>
+          ${discount > 0 ? `<div class="summary-row" style="color:var(--green); font-weight:600;"><span>Скидка (${CAFE.promoCode})</span><span>−${discount} ₽</span></div>` : ""}
+          <div class="summary-row"><span>Упаковка</span><span style="color:var(--green); font-weight:600;">Бесплатно</span></div>
+
+          <div class="summary-total">
+            <span style="font-weight:700;">К оплате:</span>
+            <span class="rubik" style="font-size:25px; color:var(--brand);">${total} ₽</span>
+          </div>
+
+          <button class="btn-red-pill shine" style="width:100%; padding:15px; font-size:15px;" onclick="openPaymentModal()">
+            Перейти к оплате
+          </button>
+
+          ${supportBlockHtml()}
+        </div>
+      </div>
+    `;
+  }
+
+  // ОКНО ОПЛАТЫ
+  function openPaymentModal() {
+    const { count, total } = getTotals();
+    if (!count) return;
+    renderPaymentStep();
+    openModal("paymentModal");
+  }
+
+  function selectPayMethod(method) {
+    selectedPayMethod = method;
+    renderPaymentStep();
+  }
+
+  function renderPaymentStep() {
+    const { count, total } = getTotals();
+    const isDelivery = activeMode === "Доставка";
+    const btnText = selectedPayMethod === "cash"
+      ? `Оформить заказ на ${total} ₽`
+      : `Оплатить ${total} ₽`;
+
+    document.getElementById("paymentModalBody").innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="font-size:20px;">Оплата заказа</h3>
+        <button class="del-btn" onclick="closeModal('paymentModal')">✕</button>
+      </div>
+      <p style="font-size:13.5px; color:var(--muted);">
+        ${activeMode} • ${count} поз. на сумму <strong style="color:var(--text);">${total} ₽</strong>
+      </p>
+
+      <div class="pay-methods">
+        <div class="pay-option ${selectedPayMethod==='sbp'?'selected':''}" onclick="selectPayMethod('sbp')">
+          <div class="pay-option-left">
+            <div class="pay-radio"></div>
+            <div>
+              <div style="font-weight:700; font-size:14px;">СБП (Система быстрых платежей)</div>
+              <div style="font-size:12px; color:var(--muted);">Мгновенная оплата через приложение банка</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pay-option ${selectedPayMethod==='card'?'selected':''}" onclick="selectPayMethod('card')">
+          <div class="pay-option-left">
+            <div class="pay-radio"></div>
+            <div>
+              <div style="font-weight:700; font-size:14px;">Банковская карта онлайн</div>
+              <div style="font-size:12px; color:var(--muted);">МИР, Visa, Mastercard</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pay-option ${selectedPayMethod==='cash'?'selected':''}" onclick="selectPayMethod('cash')">
+          <div class="pay-option-left">
+            <div class="pay-radio"></div>
+            <div>
+              <div style="font-weight:700; font-size:14px;">При получении</div>
+              <div style="font-size:12px; color:var(--muted);">Картой или наличными</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Телефон для чека и уведомления о готовности</label>
+        <input type="tel" id="payPhone" placeholder="+7 (900) 000-00-00">
+      </div>
+      ${isDelivery ? `
+      <div class="form-field">
+        <label>Адрес доставки</label>
+        <input type="text" id="payAddress" placeholder="Улица, дом, подъезд, квартира">
+      </div>` : ""}
+
+      <button class="btn-red-pill shine" id="confirmPayBtn" style="width:100%; padding:14px; font-size:15px; margin-top:4px;" onclick="processPayment()">
+        ${btnText}
+      </button>
+    `;
+  }
+
+  function processPayment() {
+    const btn = document.getElementById("confirmPayBtn");
+    const { total } = getTotals();
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span> Обрабатываем заказ...`;
+
+    setTimeout(() => {
+      const orderNum = Math.floor(1000 + Math.random() * 9000);
+      cart = {};
+      appliedPromo = "";
+      saveCart();
+      syncBadges();
+      if (activePage === "cart") renderCart();
+      if (activePage === "menu") renderCatalog();
+
+      document.getElementById("paymentModalBody").innerHTML = `
+        <div style="text-align:center; padding-top:8px;">
+          <div class="success-circle">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <h3 style="font-size:22px; margin-bottom:6px;">Заказ №${orderNum} принят!</h3>
+          <p style="font-size:14px; color:var(--muted); margin-bottom:14px;">
+            Сумма заказа: <strong style="color:var(--text);">${total} ₽</strong> (${activeMode}).<br>
+            Кухня уже приступила к приготовлению.
+          </p>
+        </div>
+        ${supportBlockHtml()}
+        <button class="btn-outline-pill" style="width:100%; margin-top:14px; padding:12px;" onclick="closeModal('paymentModal'); openPage('menu');">
+          Вернуться в меню
+        </button>
+      `;
+    }, 850);
+  }
+
+  // Модалка быстрого просмотра блюда
+  function openProductModal(id) {
+    const item = MENU.find(m => m.id === id);
+    if (!item) return;
+    const imgKey = item.imgKey || item.comboKeys[0];
+    document.getElementById("productModalCard").innerHTML = `
+      ${imgTag(imgKey, item.name, "modal-img")}
+      <div class="modal-body">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-bottom:8px;">
+          <h3 style="font-size:22px;">${item.name}</h3>
+          <button class="del-btn" onclick="closeModal('productModal')">✕</button>
+        </div>
+        <div style="font-size:13px; color:var(--muted); margin-bottom:12px;">${item.weight} • Рейтинг гостей ${item.rating} ★</div>
+        <p style="font-size:14px; color:var(--text); margin-bottom:22px;">${item.comp}</p>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top:14px; border-top:1px solid var(--border);">
+          <span class="rubik" style="font-size:24px;">${item.price} ₽</span>
+          <button class="btn-red-pill" style="padding:12px 24px; font-size:14px;" onclick="changeQty(${item.id}, 1); closeModal('productModal');">
+            Добавить в корзину
+          </button>
+        </div>
+      </div>
+    `;
+    openModal("productModal");
+  }
+
+  // Модалка подарка
+  function openGiftModal() {
+    const { subtotal } = getTotals();
+    const left = Math.max(0, CAFE.giftThreshold - subtotal);
+    const pct = Math.min(100, Math.round((subtotal / CAFE.giftThreshold) * 100));
+    document.getElementById("giftModalBody").innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <h3 style="font-size:20px;">Подарок к заказу</h3>
+        <button class="del-btn" onclick="closeModal('giftModal')">✕</button>
+      </div>
+      <p style="font-size:14px; color:var(--muted); margin-bottom:14px;">
+        При заказе от <b>${CAFE.giftThreshold} ₽</b> мы бесплатно добавим в вашу корзину горячий картофель по-деревенски с фирменным соусом.
+      </p>
+      <div class="gift-progress">
+        <div style="font-size:13px; font-weight:700;">
+          ${left > 0 ? `До подарка осталось: ${left} ₽` : "Подарок разблокирован и уже ждёт вас в корзине!"}
+        </div>
+        <div class="gift-bar-bg"><div class="gift-bar-fill" style="width:${pct}%"></div></div>
+      </div>
+      <button class="btn-red-pill" style="width:100%; padding:13px;" onclick="closeModal('giftModal'); openPage('${left > 0 ? "menu" : "cart"}')">
+        ${left > 0 ? "Выбрать блюда" : "Перейти в корзину"}
+      </button>
+    `;
+    openModal("giftModal");
+  }
+
+  function openModal(id) { document.getElementById(id).classList.add("open"); }
+  function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      ["productModal", "giftModal", "paymentModal"].forEach(closeModal);
+    }
+  });
+
+  // Инициализация
+  initBannerPhotos();
+  renderCatalog();
+  syncBadges();
+</script>
+</body>
+</html>
